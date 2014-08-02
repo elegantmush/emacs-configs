@@ -1,13 +1,13 @@
-;;; init.el --- Umesh Telang's custom Emacs initialization
+;;; init.el --- elegantmush's custom Emacs initialization
 
 ;; Filename: init.el
-;; Author: Umesh Telang <umeshtelang@mac.com>
+;; Author: elegantmush <e@f.g>
 
 
 ;;; Commentary:
 ;;
 ;; This is the initialization file used to set up Emacs
-;; with Umesh Telang's preferred defaults.
+;; with elegantmush's preferred defaults.
 
 ;;; Code:
 
