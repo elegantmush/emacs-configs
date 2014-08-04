@@ -3,7 +3,6 @@
 ;; Filename: init.el
 ;; Author: elegantmush <elegantmush@gmail.com>
 
-
 ;;; Commentary:
 ;;
 ;; This is the initialization file used to set up Emacs
