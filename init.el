@@ -1,13 +1,13 @@
-;;; init.el --- Umesh Telang's custom Emacs initialization
+;;; init.el --- elegantmush's custom Emacs initialization
 
 ;; Filename: init.el
-;; Author: Umesh Telang <umeshtelang@mac.com>
+;; Author: elegantmush <elegantmush@gmail.com>
 
 
 ;;; Commentary:
 ;;
 ;; This is the initialization file used to set up Emacs
-;; with Umesh Telang's preferred defaults.
+;; with elegantmush's preferred defaults.
 
 ;;; Code:
 
@@ -39,8 +39,14 @@
 (setq-default recentf-max-menu-items 25)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
-;; Other window - rebind to easier key binding
+;; Easy window navigation / transposition operations
 (global-set-key "\M-o" 'other-window)
+(require 'buffer-move)
+(global-set-key (kbd "<C-s-up>")     'buf-move-up)
+(global-set-key (kbd "<C-s-down>")   'buf-move-down)
+(global-set-key (kbd "<C-s-left>")   'buf-move-left)
+(global-set-key (kbd "<C-s-right>")  'buf-move-right)
+
 
 ;; IDO
 (ido-mode t)
@@ -93,6 +99,7 @@
 
 
 ;; Clojure
+(add-to-list 'auto-mode-alist '("\\.clj\\'" . clojure-mode))
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 
@@ -104,9 +111,14 @@
 
 
 ;; Python
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 (add-hook 'python-mode-hook 'auto-complete-mode)
 (add-hook 'python-mode-hook 'jedi:ac-setup)
 (add-hook 'python-mode-hook 'nlinum-mode)
+
+;; Gherkin
+(require 'feature-mode)
+(add-to-list 'auto-mode-alist '("\\.feature\\'" . feature-mode))
 
 (provide 'init)
 ;;; init.el ends here
