@@ -15,6 +15,12 @@
 (add-to-list 'default-frame-alist '(height . 48))
 (add-to-list 'default-frame-alist '(width . 140))
 
+;; Proxy settings
+;; (setq url-proxy-services
+;;       '(("no_proxy". "^\\(localhost\\|127.0.0.1\\)")
+;; 	("http" . "proxy.com:8080")
+;; 	("https" . "proxy.com:8080")))
+
 ;; Package Manager - Add GNU, Marmalade and MELPA Repositories
 (require 'package)
 (setq package-archives '(("melpa" . "http://melpa.milkbox.net/packages/")
