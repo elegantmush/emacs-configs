@@ -16,6 +16,9 @@
 ;; Startup settings
 
 (setq inhibit-startup-message t)
+(when (window-system)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1))
 (add-to-list 'default-frame-alist '(height . 48))
 (add-to-list 'default-frame-alist '(width . 160))
 (setq-default ns-pop-up-frames nil)
@@ -24,16 +27,21 @@
 ;; store all backup and autosave files in the tmp dir
 (setq backup-directory-alist `((".*" . ,temporary-file-directory)))
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-;; make whitespace-mode use just basic coloring
-;(setq-default whitespace-style (quote (spaces tabs newline space-mark tab-mark newline-mark)))
-(setq-default whitespace-display-mappings
 
-       ;; all numbers are Unicode codepoint in decimal. try (insert-char 182 ) to see it
-      '(
-        (space-mark 32 [183] [46]) ; 32 SPACE, 183 MIDDLE DOT 「·」, 46 FULL STOP 「.」
-        (newline-mark 10 [182 10]) ; 10 LINE FEED
-        (tab-mark 9 [9655 9] [92 9]) ; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
-        ))
+;; whitespace
+(require 'whitespace)
+;; make whitespace-mode use just basic coloring
+(setq-default whitespace-style '(face trailing tabs newline tab-mark
+                                      newline-mark lines-tail))
+(setq-default whitespace-display-mappings
+              ;; all numbers are Unicode codepoint in decimal.
+              ;; try (insert-char 182 ) to see it
+              ;; 9 TAB, 9655 WHITE RIGHT-POINTING TRIANGLE 「▷」
+              '((tab-mark 9 [9655 9] [92 9])))
+(setq-default whitespace-line-column 80) ;; limit line length
+
+
+
 ;; activate whitespace-mode to view all whitespace characters
 (global-set-key (kbd "C-c w") 'whitespace-mode)
 
@@ -85,13 +93,13 @@ Position the cursor at its beginning, according to the current mode."
 ;; IDO
 (ido-mode t)
 (setq-default ido-enable-prefix nil
-          ido-enable-flex-matching t
-          ido-auto-merge-work-directories-length nil
-          ido-create-new-buffer 'always
-          ido-use-filename-at-point 'guess
-          ido-use-virtual-buffers t
-          ido-handle-duplicate-virtual-buffers 2
-          ido-max-prospects 10)
+              ido-enable-flex-matching t
+              ido-auto-merge-work-directories-length nil
+              ido-create-new-buffer 'always
+              ido-use-filename-at-point 'guess
+              ido-use-virtual-buffers t
+              ido-handle-duplicate-virtual-buffers 2
+              ido-max-prospects 10)
 
 ;; Display ido results vertically, rather than horizontally
 (setq-default  ido-decorations (quote ("\n-> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -134,7 +142,7 @@ Position the cursor at its beginning, according to the current mode."
 ;; IRC
 (require 'erc)
 
-; for ERC modules, these were set using M-x customize-variable RET erc-modules RET , and then "Apply and Save" ing.
+                                        ; for ERC modules, these were set using M-x customize-variable RET erc-modules RET , and then "Apply and Save" ing.
 
 (setq-default erc-log-channels-directory "~/.erc/logs/")
 (setq-default erc-save-buffer-on-part t)
@@ -146,7 +154,10 @@ Position the cursor at its beginning, according to the current mode."
 
 
 ;; All Programming languages
-(add-hook 'prog-mode 'nlinum-mode)
+(add-hook 'prog-mode-hook 'nlinum-mode)
+(add-hook 'prog-mode-hook 'column-number-mode)
+(add-hook 'prog-mode-hook 'whitespace-mode)
+
 
 ;; Emacs Lisp
 (add-hook 'emacs-lisp-mode-hook 'paredit-mode)
@@ -159,11 +170,12 @@ Position the cursor at its beginning, according to the current mode."
 (add-hook 'clojure-mode-hook 'paredit-mode)
 (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'clojure-mode-hook 'linum-mode)
+(add-hook 'clojure-mode-hook 'column-number-mode)
 
-;(setq-default cider-popup-stacktraces nil)
+                                        ;(setq-default cider-popup-stacktraces nil)
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-;(setq-default nrepl-hide-special-buffers t)
+                                        ;(setq-default nrepl-hide-special-buffers t)
 (setq-default cider-repl-print-length 25)
 
 ;; Leiningen
@@ -291,6 +303,7 @@ Position the cursor at its beginning, according to the current mode."
  '(powerline-color2 "#292945")
  '(show-paren-mode t)
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(speedbar-show-unknown-files t)
  '(sr-speedbar-right-side nil)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
